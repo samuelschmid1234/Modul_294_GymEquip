@@ -1,1 +1,92 @@
-<p>categorys works!</p>
+<div class="page">
+  <header class="page__header">
+    <h1>Kategorien &amp; Typen</h1>
+    <p>Verwalten Sie Ihre Inventar-Klassifizierungen</p>
+  </header>
+
+  <div class="grid">
+    <mat-card class="panel">
+      <h2>Muskelgruppen (Kategorien)</h2>
+
+      <ng-container *appHasRole="['update', 'admin']">
+        <form class="add-row" (ngSubmit)="addCategory()">
+          <mat-form-field appearance="outline" class="add-row__input">
+            <mat-label>Neue Kategorie …</mat-label>
+            <input matInput [formControl]="newCategoryName" aria-label="Neue Kategorie" />
+          </mat-form-field>
+          <button mat-flat-button color="primary" type="submit">
+            <mat-icon>add</mat-icon>
+            <span>Hinzufügen</span>
+          </button>
+        </form>
+      </ng-container>
+
+      <div class="list">
+        @for (cat of categories(); track cat.id) {
+          <div class="list-item">
+            <span class="list-item__id">cat-{{ cat.id }}</span>
+            <span class="badge" data-variant="primary">{{ cat.name }}</span>
+            <button
+              mat-icon-button
+              color="warn"
+              *appHasRole="'admin'"
+              (click)="deleteCategory(cat)"
+              aria-label="Löschen"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        } @empty {
+          <p class="empty">Keine Kategorien vorhanden.</p>
+        }
+      </div>
+
+      <div class="total total--primary">
+        <span class="total__value">{{ categories().length }}</span>
+        <span class="total__label">Kategorien gesamt</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="panel">
+      <h2>Zubehör-Typen (AccessoryTypes)</h2>
+
+      <ng-container *appHasRole="['update', 'admin']">
+        <form class="add-row" (ngSubmit)="addAccessoryType()">
+          <mat-form-field appearance="outline" class="add-row__input">
+            <mat-label>Neuer Typ …</mat-label>
+            <input matInput [formControl]="newAccessoryTypeName" aria-label="Neuer Zubehör-Typ" />
+          </mat-form-field>
+          <button mat-flat-button color="primary" type="submit">
+            <mat-icon>add</mat-icon>
+            <span>Hinzufügen</span>
+          </button>
+        </form>
+      </ng-container>
+
+      <div class="list">
+        @for (type of accessoryTypes(); track type.id) {
+          <div class="list-item">
+            <span class="list-item__id">acc-type-{{ type.id }}</span>
+            <span class="badge" data-variant="secondary">{{ type.name }}</span>
+            <button
+              mat-icon-button
+              color="warn"
+              *appHasRole="'admin'"
+              (click)="deleteAccessoryType(type)"
+              aria-label="Löschen"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        } @empty {
+          <p class="empty">Keine Zubehör-Typen vorhanden.</p>
+        }
+      </div>
+
+      <div class="total">
+        <span class="total__value">{{ accessoryTypes().length }}</span>
+        <span class="total__label">Typen gesamt</span>
+      </div>
+    </mat-card>
+  </div>
+</div>
