@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { signal } from '@angular/core';
 import { App } from './app';
 import { AuthService } from './service/auth.service';
 
@@ -12,9 +13,9 @@ describe('App', () => {
         {
           provide: AuthService,
           useValue: {
-            isAuthenticated: () => false,
-            userName: () => '',
-            userRoles: () => [],
+            isAuthenticated: signal(false),
+            userName: signal(''),
+            userRoles: signal([]),
           },
         },
       ],

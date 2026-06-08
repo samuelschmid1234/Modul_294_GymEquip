@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Sidebar } from './components/sidebar/sidebar';
 import { TopBar } from './components/top-bar/top-bar';
+import { AuthService } from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,7 @@ import { TopBar } from './components/top-bar/top-bar';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App {}
+export class App {
+  private readonly authService = inject(AuthService);
+  readonly isAuthenticated = this.authService.isAuthenticated;
+}
