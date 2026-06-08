@@ -1,3 +1,11 @@
-<main>
-  <app-dashboard></app-dashboard>
-</main>
+<div class="app-shell">
+  <app-sidebar />
+  <div class="app-shell__content">
+    <app-top-bar />
+    <main class="app-shell__main">
+      <div class="app-shell__container">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+</div>
