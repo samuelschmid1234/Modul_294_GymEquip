@@ -1,0 +1,51 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background);
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px;
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+
+    mat-icon {
+      color: var(--color-primary);
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  &__error {
+    color: var(--color-destructive);
+    background: rgba(var(--color-destructive-rgb), 0.08);
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  &__submit {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
