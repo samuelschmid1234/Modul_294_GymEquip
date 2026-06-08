@@ -1,1 +1,69 @@
-<p>dashboard works!</p>
+<div class="page">
+  <header class="page__header">
+    <h1>Dashboard</h1>
+    <p>Übersicht über Ihr Inventar</p>
+  </header>
+
+  @if (error(); as err) {
+    <div class="alert alert--error">{{ err }}</div>
+  }
+
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <div class="stat-card__head">
+        <span class="stat-card__title">Gesamtinventar</span>
+        <mat-icon class="stat-card__icon">inventory_2</mat-icon>
+      </div>
+      <div class="stat-card__value">{{ totalMachines() }}</div>
+      <p class="stat-card__desc">Maschinen im System</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__head">
+        <span class="stat-card__title">Aktive Geräte</span>
+        <mat-icon class="stat-card__icon stat-card__icon--success">check_circle</mat-icon>
+      </div>
+      <div class="stat-card__value">{{ activeMachines() }}</div>
+      <p class="stat-card__desc">{{ activeRatio() | number }}% in Betrieb</p>
+    </mat-card>
+
+    <mat-card class="stat-card stat-card--destructive">
+      <div class="stat-card__head">
+        <span class="stat-card__title">Defekte Geräte</span>
+        <mat-icon class="stat-card__icon stat-card__icon--destructive">warning</mat-icon>
+      </div>
+      <div class="stat-card__value stat-card__value--destructive">{{ brokenMachines() }}</div>
+      <p class="stat-card__desc">Sofortige Aufmerksamkeit</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__head">
+        <span class="stat-card__title">In Reparatur</span>
+        <mat-icon class="stat-card__icon">build</mat-icon>
+      </div>
+      <div class="stat-card__value">{{ inRepair() }}</div>
+      <p class="stat-card__desc">Wird bearbeitet</p>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-card__head">
+        <span class="stat-card__title">Zubehör-Sets</span>
+        <mat-icon class="stat-card__icon">category</mat-icon>
+      </div>
+      <div class="stat-card__value">{{ accessorySetsCount() }}</div>
+      <p class="stat-card__desc">Sammlungen im System</p>
+    </mat-card>
+  </div>
+
+  <mat-card class="overview-card">
+    <h2>Status-Übersicht</h2>
+    <div class="status-grid">
+      @for (item of statusCards(); track item.status) {
+        <div class="status-cell">
+          <span class="badge" [attr.data-variant]="item.variant">{{ item.label }}</span>
+          <div class="status-cell__count">{{ item.count }}</div>
+        </div>
+      }
+    </div>
+  </mat-card>
+</div>
