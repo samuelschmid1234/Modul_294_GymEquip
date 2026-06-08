@@ -92,7 +92,13 @@ export class Categorys implements OnInit {
         this.categories.update((list) => list.filter((c) => c.id !== category.id));
         this.snackBar.open('Kategorie gelöscht', 'OK', { duration: 2000 });
       },
-      error: () => this.snackBar.open('Löschen fehlgeschlagen', 'OK', { duration: 3000 }),
+      error: (err) => {
+        const msg =
+          err?.status === 409 || err?.status === 500
+            ? 'Löschen fehlgeschlagen – Kategorie ist noch in Verwendung'
+            : 'Löschen fehlgeschlagen';
+        this.snackBar.open(msg, 'OK', { duration: 4000 });
+      },
     });
   }
 
