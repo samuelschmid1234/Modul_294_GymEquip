@@ -1,1 +1,66 @@
-<p>accessory-sets works!</p>
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1>Kleingeräte &amp; Sets</h1>
+      <p>Verwalten Sie Ihre Zubehör-Sammlungen</p>
+    </div>
+    <ng-container *appHasRole="['update', 'admin']">
+      <button mat-flat-button color="primary" (click)="openCreate()">
+        <mat-icon>add</mat-icon>
+        <span>Neues Set anlegen</span>
+      </button>
+    </ng-container>
+  </header>
+
+  @if (loading()) {
+    <p class="loading">Lade Sets …</p>
+  } @else if (sets().length === 0) {
+    <p class="loading">Keine Sets vorhanden.</p>
+  } @else {
+    <div class="sets-grid">
+      @for (set of sets(); track set.id) {
+        <mat-card class="set-card">
+          <div class="set-card__head">
+            <div class="set-card__title">
+              <div class="set-card__icon">
+                <mat-icon>inventory_2</mat-icon>
+              </div>
+              <div>
+                <h2>{{ set.name }}</h2>
+                <p>{{ totalItems(set) }} Teile insgesamt</p>
+              </div>
+            </div>
+            <div class="set-card__actions" *appHasRole="['update', 'admin']">
+              <button mat-icon-button (click)="openEdit(set)" aria-label="Bearbeiten">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                *appHasRole="'admin'"
+                (click)="delete(set)"
+                aria-label="Löschen"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+
+          <div class="set-card__list">
+            @if ((set.accessoryList?.length ?? 0) === 0) {
+              <p class="set-card__empty">Keine Zubehörteile in diesem Set.</p>
+            } @else {
+              @for (acc of set.accessoryList; track $index; let i = $index) {
+                <app-accessory-item-card
+                  [accessory]="acc"
+                  (countChange)="updateAccessoryCount(set, i, $event)"
+                  (remove)="removeAccessory(set, i)"
+                />
+              }
+            }
+          </div>
+        </mat-card>
+      }
+    </div>
+  }
+</div>
