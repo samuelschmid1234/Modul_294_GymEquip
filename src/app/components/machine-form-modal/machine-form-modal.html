@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>
+  {{ isEdit ? 'Gerät bearbeiten' : 'Neues Gerät hinzufügen' }}
+</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <mat-dialog-content class="form-content">
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" required aria-label="Name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Marke</mat-label>
+        <input matInput formControlName="brand" required aria-label="Marke" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Seriennummer</mat-label>
+        <input matInput formControlName="serialNumber" required aria-label="Seriennummer" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Anschaffungspreis (€)</mat-label>
+        <input
+          matInput
+          type="number"
+          min="0"
+          formControlName="price"
+          required
+          aria-label="Anschaffungspreis in Euro"
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Kategorie</mat-label>
+        <mat-select formControlName="categoryId" required aria-label="Kategorie">
+          @for (cat of categories(); track cat.id) {
+            <mat-option [value]="cat.id">{{ cat.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" required aria-label="Status">
+          @for (option of statusOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Letzte Wartung</mat-label>
+        <input
+          matInput
+          type="date"
+          formControlName="lastRestoration"
+          aria-label="Letzte Wartung"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nächste Wartung</mat-label>
+        <input
+          matInput
+          type="date"
+          formControlName="nextRestoration"
+          aria-label="Nächste Wartung"
+        />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Kommentar</mat-label>
+      <textarea matInput rows="2" formControlName="comment" aria-label="Kommentar"></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancel()">Abbrechen</button>
+    <button mat-flat-button color="primary" type="submit">Speichern</button>
+  </mat-dialog-actions>
+</form>

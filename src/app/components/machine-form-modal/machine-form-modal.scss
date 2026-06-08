@@ -1,0 +1,17 @@
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px !important;
+  min-width: 520px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
