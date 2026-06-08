@@ -4,12 +4,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { AuthService } from '../../service/auth.service';
 
-interface NavItem {
-  path: string;
-  label: string;
-  icon: string;
-}
-
 @Component({
   selector: 'app-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,13 +13,6 @@ interface NavItem {
 })
 export class Sidebar {
   private readonly authService = inject(AuthService);
-
-  readonly navItems: NavItem[] = [
-    { path: '/', label: 'Dashboard', icon: 'dashboard' },
-    { path: '/machines', label: 'Grossgeräte', icon: 'fitness_center' },
-    { path: '/accessory-sets', label: 'Zubehör-Sets', icon: 'inventory_2' },
-    { path: '/categories', label: 'Kategorien', icon: 'category' },
-  ];
 
   readonly userName = this.authService.userName;
   readonly role = computed(() => {
