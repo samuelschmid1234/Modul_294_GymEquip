@@ -1,0 +1,33 @@
+<div class="item">
+  <div class="item__info">
+    <span class="badge" data-variant="secondary">
+      {{ accessory().accessoryType.name }}
+    </span>
+    @if (accessory().weight) {
+      <span class="item__weight">{{ accessory().weight }} kg</span>
+    }
+  </div>
+
+  <div class="item__controls">
+    <span class="item__count">{{ accessory().count }} Stk.</span>
+
+    @if (canEdit()) {
+      <div class="item__buttons">
+        <button
+          mat-icon-button
+          (click)="decrement()"
+          [disabled]="accessory().count === 0"
+          aria-label="Reduzieren"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+        <button mat-icon-button (click)="increment()" aria-label="Erhöhen">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="remove.emit()" aria-label="Entfernen">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    }
+  </div>
+</div>
