@@ -1,0 +1,144 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  width: 256px;
+  height: 100vh;
+  background: var(--color-card);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+
+  &__brand {
+    padding: 24px;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    mat-icon {
+      color: var(--color-primary);
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    p {
+      font-size: 12px;
+      color: var(--color-muted-foreground);
+      margin: 0;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-foreground);
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: var(--color-accent);
+    }
+
+    &.active {
+      background: var(--color-primary);
+      color: var(--color-primary-foreground);
+    }
+  }
+
+  &__user {
+    padding: 16px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  &__user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(var(--color-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      color: var(--color-primary);
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  &__user-name {
+    font-size: 13px;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__user-role {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: lowercase;
+    width: fit-content;
+
+    &.role-admin {
+      background: var(--color-primary);
+      color: var(--color-primary-foreground);
+    }
+
+    &.role-update {
+      background: var(--color-secondary);
+      color: var(--color-secondary-foreground);
+    }
+
+    &.role-read {
+      background: transparent;
+      color: var(--color-muted-foreground);
+      border: 1px solid var(--color-border);
+    }
+  }
+}
