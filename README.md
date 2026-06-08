@@ -1,59 +1,102 @@
-# GymEquip
+# GymEquip Frontend (Modul 294)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.0.
+Angular-Frontend zur Verwaltung von Fitnessstudio-Inventar (Maschinen, Zubehör-Sets,
+Kategorien). Bindet das im Modul 295 erstellte Spring-Boot-Backend an und nutzt Keycloak
+für Authentifizierung & Autorisierung.
 
-## Development server
+## Voraussetzungen
 
-To start a local development server, run:
+| Komponente | Erwartete Konfiguration |
+|---|---|
+| **Backend** | Läuft auf `http://localhost:9090` (Spring Boot) |
+| **PostgreSQL** | DB `gymEquip`, User `postgres`, Passwort `1234` (siehe Backend-Doku) |
+| **Keycloak** | Läuft auf `http://localhost:8080`, Realm `GymEquip`, Client `GymEquip` |
+| **Node.js** | ≥ 20 |
 
-```bash
-ng serve
-```
+### Keycloak-Setup
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* Realm: `GymEquip`
+* Client: `GymEquip` (Public Client mit Standard Flow, gültige Redirect-URIs `http://localhost:4200/*`, Web-Origins `http://localhost:4200`)
+* Rollen: `admin`, `update`, `read`
+* Test-User: `admin`, `user`, `user_readonly` (alle mit Passwort `1234`)
 
-## Code scaffolding
+### Rollen-Berechtigungen im Frontend
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Aktion | read | update | admin |
+|---|---|---|---|
+| Listen anzeigen | ✓ | ✓ | ✓ |
+| Anlegen / Bearbeiten | – | ✓ | ✓ |
+| Löschen | – | – | ✓ |
 
-```bash
-ng generate component component-name
-```
+## Netzwerk-Ports
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* Frontend: `4200` (Default Angular Dev Server)
+* Backend: `9090`
+* Keycloak: `8080`
 
-```bash
-ng generate --help
-```
+Wird einer dieser Ports geändert, müssen die entsprechenden Werte in
+[src/environments/environment.ts](src/environments/environment.ts) bzw.
+[src/environments/environment.development.ts](src/environments/environment.development.ts)
+sowie die CORS-/Redirect-Einstellungen in Backend und Keycloak angepasst werden.
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Installation
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Development-Server starten
 
-## Additional Resources
+```bash
+npm start
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Anschliessend `http://localhost:4200` im Browser öffnen. Es erfolgt automatisch ein
+Redirect zur Keycloak-Login-Seite.
+
+## Build
+
+```bash
+npm run build
+```
+
+Output landet unter `dist/gymEquip`.
+
+## Unit-Tests (Vitest)
+
+```bash
+npm test
+```
+
+Enthaltene Tests:
+
+* `src/app/service/machine.service.spec.ts` – alle CRUD-Methoden des wichtigsten Services.
+* `src/app/pages/machines/machines.spec.ts` – alle Methoden der wichtigsten Komponente.
+* Smoke-Tests für `App`, `Dashboard`, `AccessorySets`, `Categorys`.
+
+## Projektstruktur
+
+```
+src/app/
+  app.*                  Root-Komponente, Routing, App-Config
+  components/            Sub-Komponenten (Sidebar, TopBar, FormModals, AccessoryItemCard)
+  directives/            HasRoleDirective (rollenbasierte UI-Sichtbarkeit)
+  guard/                 AuthGuard (geschützte Routes)
+  models/                Domain-Modelle (Machine, AccessorySet, Category, …)
+  pages/                 Dashboard, Machines, AccessorySets, Categorys
+  service/               REST-Services + AuthService (Keycloak-Wrapper)
+```
+
+## Erwartete REST-Endpoints
+
+Die Services rufen folgende Endpunkte im Backend (Basis-URL `http://localhost:9090`) auf:
+
+| Methode | Pfad | Verwendet von |
+|---|---|---|
+| GET/POST/PUT/DELETE | `/api/machines[/{id}]` | `MachineService` |
+| GET/POST/PUT/DELETE | `/api/accessory-sets[/{id}]` | `AccessorySetService` |
+| GET/POST/PUT/DELETE | `/api/categories[/{id}]` | `CategoryService` |
+| GET/POST/PUT/DELETE | `/api/accessory-types[/{id}]` | `AccessoryTypeService` |
+
+Falls Ihre Spring-Boot-Controller andere Pfade verwenden, kann die `baseUrl` in den
+jeweiligen Service-Dateien unter `src/app/service/` angepasst werden.
