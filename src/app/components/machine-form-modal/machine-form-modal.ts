@@ -23,11 +23,26 @@ interface MachineForm {
   brand: FormControl<string>;
   serialNumber: FormControl<string>;
   price: FormControl<number>;
+  purchaseDate: FormControl<string>;
   comment: FormControl<string>;
   categoryId: FormControl<number | null>;
   status: FormControl<Status>;
   lastRestoration: FormControl<string>;
   nextRestoration: FormControl<string>;
+}
+
+function toDateInputValue(value?: string): string {
+  if (value) {
+    return value.slice(0, 10);
+  }
+
+  const now = new Date();
+  const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 10);
+}
+
+function toLocalDateTime(value: string): string {
+  return `${value}T00:00:00`;
 }
 
 @Component({
@@ -61,6 +76,7 @@ export class MachineFormModal implements OnInit {
     brand: this.fb.nonNullable.control('', Validators.required),
     serialNumber: this.fb.nonNullable.control('', Validators.required),
     price: this.fb.nonNullable.control(0, [Validators.required, Validators.min(0)]),
+    purchaseDate: this.fb.nonNullable.control(toDateInputValue(), Validators.required),
     comment: this.fb.nonNullable.control(''),
     categoryId: this.fb.control<number | null>(null, Validators.required),
     status: this.fb.nonNullable.control(Status.IN_USE, Validators.required),
@@ -82,6 +98,7 @@ export class MachineFormModal implements OnInit {
         brand: machine.brand,
         serialNumber: machine.serialNumber,
         price: machine.price,
+        purchaseDate: toDateInputValue(machine.purchaseDate),
         comment: machine.comment ?? '',
         categoryId: machine.category?.id ?? null,
         status: machine.status,
@@ -109,6 +126,7 @@ export class MachineFormModal implements OnInit {
       brand: value.brand,
       serialNumber: value.serialNumber,
       price: value.price,
+      purchaseDate: toLocalDateTime(value.purchaseDate),
       comment: value.comment || undefined,
       category,
       status: value.status,

@@ -57,6 +57,17 @@
 
     <div class="form-row">
       <mat-form-field appearance="outline">
+        <mat-label>Anschaffungsdatum</mat-label>
+        <input
+          matInput
+          type="date"
+          formControlName="purchaseDate"
+          required
+          aria-label="Anschaffungsdatum"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Letzte Wartung</mat-label>
         <input
           matInput
@@ -65,7 +76,9 @@
           aria-label="Letzte Wartung"
         />
       </mat-form-field>
+    </div>
 
+    <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Nächste Wartung</mat-label>
         <input
