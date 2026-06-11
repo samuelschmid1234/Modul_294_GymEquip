@@ -118,7 +118,7 @@ export class AccessorySets implements OnInit {
       AccessorySetFormModal,
       AccessorySetDialogData,
       AccessorySet | undefined
-    >(AccessorySetFormModal, { data, autoFocus: false });
+    >(AccessorySetFormModal, { data, autoFocus: false, minWidth: '50vw' });
 
     ref.afterClosed().subscribe((result) => {
       if (!result) return;
