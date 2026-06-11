@@ -5,12 +5,12 @@
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput formControlName="name" required aria-label="Name" />
+        <input maxlength="50" matInput formControlName="name" required aria-label="Name" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Marke</mat-label>
-        <input matInput formControlName="brand" required aria-label="Marke" />
+        <input maxlength="50" matInput formControlName="brand" required aria-label="Marke" />
       </mat-form-field>
     </div>
 
@@ -21,6 +21,7 @@
           matInput
           type="number"
           min="0"
+          max="99999"
           formControlName="price"
           required
           aria-label="Preis in Euro"
@@ -46,7 +47,7 @@
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Kommentar</mat-label>
-      <textarea matInput rows="2" formControlName="comment" aria-label="Kommentar"></textarea>
+      <textarea maxlength="400" matInput rows="2" formControlName="comment" aria-label="Kommentar"></textarea>
     </mat-form-field>
 
     <div class="accessories">
@@ -80,6 +81,7 @@
                 matInput
                 type="number"
                 min="0"
+                max="9999"
                 formControlName="weight"
                 aria-label="Gewicht in Kilogramm"
               />
@@ -91,6 +93,7 @@
                 matInput
                 type="number"
                 min="0"
+                max="9999"
                 formControlName="count"
                 required
                 aria-label="Anzahl"
