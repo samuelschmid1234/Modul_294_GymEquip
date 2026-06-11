@@ -12,7 +12,7 @@
         <form class="add-row" (ngSubmit)="addCategory()" (submit)="$event.preventDefault()">
           <mat-form-field appearance="outline" class="add-row__input">
             <mat-label>Neue Kategorie …</mat-label>
-            <input matInput [formControl]="newCategoryName" aria-label="Neue Kategorie" />
+            <input maxlength="50" matInput [formControl]="newCategoryName" aria-label="Neue Kategorie" />
           </mat-form-field>
           <button mat-flat-button color="primary" type="button" (click)="addCategory()">
             <mat-icon>add</mat-icon>
@@ -54,7 +54,7 @@
         <form class="add-row" (ngSubmit)="addAccessoryType()" (submit)="$event.preventDefault()">
           <mat-form-field appearance="outline" class="add-row__input">
             <mat-label>Neuer Typ …</mat-label>
-            <input matInput [formControl]="newAccessoryTypeName" aria-label="Neuer Zubehör-Typ" />
+            <input maxlength="50" matInput [formControl]="newAccessoryTypeName" aria-label="Neuer Zubehör-Typ" />
           </mat-form-field>
           <button mat-flat-button color="primary" type="button" (click)="addAccessoryType()">
             <mat-icon>add</mat-icon>
