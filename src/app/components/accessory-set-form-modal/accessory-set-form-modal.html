@@ -28,6 +28,13 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Kaufdatum</mat-label>
+        <input matInput type="date" formControlName="purchaseDate" required aria-label="Kaufdatum" />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline">
         <mat-label>Kategorie</mat-label>
         <mat-select formControlName="categoryId" required aria-label="Kategorie">
           @for (cat of categories(); track cat.id) {
