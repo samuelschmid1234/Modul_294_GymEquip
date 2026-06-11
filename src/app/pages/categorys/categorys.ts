@@ -44,8 +44,14 @@ export class Categorys implements OnInit {
   readonly categories = signal<Category[]>([]);
   readonly accessoryTypes = signal<AccessoryType[]>([]);
 
-  readonly newCategoryName = new FormControl<string>('', { nonNullable: true, validators: [Validators.required] });
-  readonly newAccessoryTypeName = new FormControl<string>('', { nonNullable: true, validators: [Validators.required] });
+  readonly newCategoryName = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
+  });
+  readonly newAccessoryTypeName = new FormControl<string>('', {
+    nonNullable: true,
+    validators: [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
+  });
 
   ngOnInit(): void {
     this.loadCategories();

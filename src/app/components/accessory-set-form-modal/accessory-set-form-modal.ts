@@ -47,10 +47,6 @@ function toDateInputValue(value?: string): string {
   return localDate.toISOString().slice(0, 10);
 }
 
-function toLocalDateTime(value: string): string {
-  return `${value}T00:00:00`;
-}
-
 @Component({
   selector: 'app-accessory-set-form-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -83,11 +79,15 @@ export class AccessorySetFormModal implements OnInit {
   }));
 
   protected readonly form = this.fb.nonNullable.group({
-    name: this.fb.nonNullable.control('', Validators.required),
-    brand: this.fb.nonNullable.control('', Validators.required),
-    price: this.fb.nonNullable.control(0, [Validators.required, Validators.min(0)]),
+    name: this.fb.nonNullable.control('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(100),
+    ]),
+    brand: this.fb.nonNullable.control('', Validators.maxLength(100)),
+    price: this.fb.nonNullable.control(0, Validators.min(0)),
     purchaseDate: this.fb.nonNullable.control(toDateInputValue(), Validators.required),
-    comment: this.fb.nonNullable.control(''),
+    comment: this.fb.nonNullable.control('', Validators.maxLength(500)),
     categoryId: this.fb.control<number | null>(null, Validators.required),
     accessories: this.fb.array<FormGroup<AccessoryGroupControls>>([]),
   });
@@ -130,7 +130,7 @@ export class AccessorySetFormModal implements OnInit {
           Validators.required,
           Validators.min(0),
         ]),
-        status: this.fb.nonNullable.control(initial?.status ?? Status.IN_USE),
+        status: this.fb.nonNullable.control(initial?.status ?? Status.IN_USE, Validators.required),
       }),
     );
   }
@@ -166,7 +166,7 @@ export class AccessorySetFormModal implements OnInit {
       name: value.name,
       brand: value.brand,
       price: value.price,
-      purchaseDate: toLocalDateTime(value.purchaseDate),
+      purchaseDate: value.purchaseDate,
       comment: value.comment || undefined,
       category,
       type: InventoryItemType.ACCESSORY_SET,

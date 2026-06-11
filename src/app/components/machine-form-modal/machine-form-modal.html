@@ -7,19 +7,19 @@
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
-        <input maxlength="50" matInput formControlName="name" required aria-label="Name" />
+        <input maxlength="100" matInput formControlName="name" required aria-label="Name" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Marke</mat-label>
-        <input maxlength="50" matInput formControlName="brand" required aria-label="Marke" />
+        <input maxlength="100" matInput formControlName="brand" aria-label="Marke" />
       </mat-form-field>
     </div>
 
     <div class="form-row">
       <mat-form-field appearance="outline">
         <mat-label>Seriennummer</mat-label>
-        <input maxlength="50" matInput formControlName="serialNumber" required aria-label="Seriennummer" />
+        <input maxlength="100" matInput formControlName="serialNumber" required aria-label="Seriennummer" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -30,7 +30,6 @@
           min="0"
           max="99999"
           formControlName="price"
-          required
           aria-label="Anschaffungspreis in Euro"
         />
       </mat-form-field>
@@ -93,7 +92,7 @@
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Kommentar</mat-label>
-      <textarea maxlength="400" matInput rows="2" formControlName="comment" aria-label="Kommentar"></textarea>
+      <textarea maxlength="500" matInput rows="2" formControlName="comment" aria-label="Kommentar"></textarea>
     </mat-form-field>
   </mat-dialog-content>
 

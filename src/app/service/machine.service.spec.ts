@@ -22,7 +22,7 @@ describe('MachineService', () => {
     brand: 'TechnoGym',
     serialNumber: 'TG-LP-001',
     price: 4500,
-    purchaseDate: '2026-06-11T00:00:00',
+    purchaseDate: '2026-06-11',
     category: { id: 1, name: 'BEINE' },
     status: Status.IN_USE,
     type: InventoryItemType.MACHINE,

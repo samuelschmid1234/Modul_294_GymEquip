@@ -41,10 +41,6 @@ function toDateInputValue(value?: string): string {
   return localDate.toISOString().slice(0, 10);
 }
 
-function toLocalDateTime(value: string): string {
-  return `${value}T00:00:00`;
-}
-
 @Component({
   selector: 'app-machine-form-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,12 +68,19 @@ export class MachineFormModal implements OnInit {
   }));
 
   protected readonly form = this.fb.nonNullable.group<MachineForm>({
-    name: this.fb.nonNullable.control('', Validators.required),
-    brand: this.fb.nonNullable.control('', Validators.required),
-    serialNumber: this.fb.nonNullable.control('', Validators.required),
-    price: this.fb.nonNullable.control(0, [Validators.required, Validators.min(0)]),
+    name: this.fb.nonNullable.control('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(100),
+    ]),
+    brand: this.fb.nonNullable.control('', Validators.maxLength(100)),
+    serialNumber: this.fb.nonNullable.control('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    price: this.fb.nonNullable.control(0, Validators.min(0)),
     purchaseDate: this.fb.nonNullable.control(toDateInputValue(), Validators.required),
-    comment: this.fb.nonNullable.control(''),
+    comment: this.fb.nonNullable.control('', Validators.maxLength(500)),
     categoryId: this.fb.control<number | null>(null, Validators.required),
     status: this.fb.nonNullable.control(Status.IN_USE, Validators.required),
     lastRestoration: this.fb.nonNullable.control(''),
@@ -126,7 +129,7 @@ export class MachineFormModal implements OnInit {
       brand: value.brand,
       serialNumber: value.serialNumber,
       price: value.price,
-      purchaseDate: toLocalDateTime(value.purchaseDate),
+      purchaseDate: value.purchaseDate,
       comment: value.comment || undefined,
       category,
       status: value.status,
