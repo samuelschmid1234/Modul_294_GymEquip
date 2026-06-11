@@ -8,62 +8,164 @@
     <div class="alert alert--error">{{ err }}</div>
   }
 
-  <div class="stats-grid">
-    <mat-card class="stat-card">
-      <div class="stat-card__head">
-        <span class="stat-card__title">Gesamtinventar</span>
-        <mat-icon class="stat-card__icon">inventory_2</mat-icon>
+  <div class="kpi-grid">
+    <mat-card class="kpi-card kpi-card--accent">
+      <span class="kpi-card__title">Inventarwert</span>
+      <div class="kpi-card__value">
+        {{ totalValue() | currency: 'CHF' : 'symbol' : '1.0-0' }}
       </div>
-      <div class="stat-card__value">{{ totalMachines() }}</div>
-      <p class="stat-card__desc">Maschinen im System</p>
+      <p class="kpi-card__desc">Maschinen + Zubehör-Sets</p>
     </mat-card>
 
-    <mat-card class="stat-card">
-      <div class="stat-card__head">
-        <span class="stat-card__title">Aktive Geräte</span>
-        <mat-icon class="stat-card__icon stat-card__icon--success">check_circle</mat-icon>
+    <mat-card class="kpi-card">
+      <div class="kpi-card__head">
+        <span class="kpi-card__title">Verfügbarkeit</span>
+        <mat-icon
+          class="kpi-card__icon"
+          [attr.data-variant]="availabilityVariant()"
+        >
+          monitor_heart
+        </mat-icon>
       </div>
-      <div class="stat-card__value">{{ activeMachines() }}</div>
-      <p class="stat-card__desc">{{ activeRatio() | number }}% in Betrieb</p>
+      <div class="kpi-card__value" [attr.data-variant]="availabilityVariant()">
+        {{ availability() }}%
+      </div>
+      <div class="kpi-card__bar">
+        <span
+          class="kpi-card__bar-fill"
+          [attr.data-variant]="availabilityVariant()"
+          [style.width.%]="availability()"
+        ></span>
+      </div>
     </mat-card>
 
-    <mat-card class="stat-card stat-card--destructive">
-      <div class="stat-card__head">
-        <span class="stat-card__title">Defekte Geräte</span>
-        <mat-icon class="stat-card__icon stat-card__icon--destructive">warning</mat-icon>
+    <mat-card class="kpi-card">
+      <div class="kpi-card__head">
+        <span class="kpi-card__title">Maschinen</span>
+        <mat-icon class="kpi-card__icon">fitness_center</mat-icon>
       </div>
-      <div class="stat-card__value stat-card__value--destructive">{{ brokenMachines() }}</div>
-      <p class="stat-card__desc">Sofortige Aufmerksamkeit</p>
+      <div class="kpi-card__value">{{ totalMachines() }}</div>
+      <p class="kpi-card__desc">{{ categoriesCount() }} Kategorien</p>
     </mat-card>
 
-    <mat-card class="stat-card">
-      <div class="stat-card__head">
-        <span class="stat-card__title">In Reparatur</span>
-        <mat-icon class="stat-card__icon">build</mat-icon>
+    <mat-card class="kpi-card">
+      <div class="kpi-card__head">
+        <span class="kpi-card__title">Zubehör-Sets</span>
+        <mat-icon class="kpi-card__icon">widgets</mat-icon>
       </div>
-      <div class="stat-card__value">{{ inRepair() }}</div>
-      <p class="stat-card__desc">Wird bearbeitet</p>
-    </mat-card>
-
-    <mat-card class="stat-card">
-      <div class="stat-card__head">
-        <span class="stat-card__title">Zubehör-Sets</span>
-        <mat-icon class="stat-card__icon">category</mat-icon>
-      </div>
-      <div class="stat-card__value">{{ accessorySetsCount() }}</div>
-      <p class="stat-card__desc">Sammlungen im System</p>
+      <div class="kpi-card__value">{{ totalSets() }}</div>
+      <p class="kpi-card__desc">{{ totalAccessoryPieces() }} Einzelteile</p>
     </mat-card>
   </div>
 
-  <mat-card class="overview-card">
-    <h2>Status-Übersicht</h2>
-    <div class="status-grid">
-      @for (item of statusCards(); track item.status) {
-        <div class="status-cell">
-          <span class="badge" [attr.data-variant]="item.variant">{{ item.label }}</span>
-          <div class="status-cell__count">{{ item.count }}</div>
+  <div class="content-grid">
+    <mat-card class="panel">
+      <div class="panel__head">
+        <h2>Wartungs-Center</h2>
+        @if (overdueCount() > 0) {
+          <span class="badge badge--destructive">
+            {{ overdueCount() }} überfällig
+          </span>
+        }
+      </div>
+
+      @if (upcomingMaintenance().length === 0) {
+        <div class="panel__empty">
+          <mat-icon>verified</mat-icon>
+          <span>Keine anstehenden Wartungen</span>
+        </div>
+      } @else {
+        <div class="maintenance-list">
+          @for (item of upcomingMaintenance(); track item.id) {
+            <div class="maintenance-row" [class.maintenance-row--overdue]="item.overdue">
+              <div class="maintenance-row__main">
+                <span class="maintenance-row__name">{{ item.name }}</span>
+                <span class="maintenance-row__date">
+                  {{ item.dueDate | date: 'dd.MM.yyyy' }}
+                </span>
+              </div>
+              <span
+                class="badge"
+                [attr.data-variant]="
+                  item.overdue ? 'destructive' : item.daysLeft <= 7 ? 'warning' : 'muted'
+                "
+              >
+                @if (item.overdue) {
+                  {{ -item.daysLeft }} T. überfällig
+                } @else if (item.daysLeft === 0) {
+                  Heute fällig
+                } @else {
+                  in {{ item.daysLeft }} T.
+                }
+              </span>
+            </div>
+          }
         </div>
       }
+    </mat-card>
+
+    <mat-card class="panel">
+      <div class="panel__head">
+        <h2>Maschinen-Status</h2>
+        <span class="panel__sub">{{ totalMachines() }} gesamt</span>
+      </div>
+
+      @if (totalMachines() === 0) {
+        <div class="panel__empty">
+          <mat-icon>inbox</mat-icon>
+          <span>Noch keine Maschinen erfasst</span>
+        </div>
+      } @else {
+        <div class="bar-list">
+          @for (bar of statusBars(); track bar.status) {
+            <div class="bar-row">
+              <div class="bar-row__head">
+                <span class="bar-row__label">{{ bar.label }}</span>
+                <span class="bar-row__value">{{ bar.count }} · {{ bar.percent }}%</span>
+              </div>
+              <div class="bar-row__track">
+                <span
+                  class="bar-row__fill"
+                  [attr.data-variant]="bar.variant"
+                  [style.width.%]="bar.percent"
+                ></span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </mat-card>
+  </div>
+
+  <mat-card class="panel">
+    <div class="panel__head">
+      <h2>Top-Kategorien</h2>
+      <span class="panel__sub">Verteilung über alle Items</span>
     </div>
+
+    @if (topCategories().length === 0) {
+      <div class="panel__empty">
+        <mat-icon>category</mat-icon>
+        <span>Keine Daten verfügbar</span>
+      </div>
+    } @else {
+      <div class="bar-list">
+        @for (cat of topCategories(); track cat.name) {
+          <div class="bar-row">
+            <div class="bar-row__head">
+              <span class="bar-row__label">{{ cat.name }}</span>
+              <span class="bar-row__value">{{ cat.count }} · {{ cat.percent }}%</span>
+            </div>
+            <div class="bar-row__track">
+              <span
+                class="bar-row__fill"
+                data-variant="primary"
+                [style.width.%]="cat.percent"
+              ></span>
+            </div>
+          </div>
+        }
+      </div>
+    }
   </mat-card>
 </div>

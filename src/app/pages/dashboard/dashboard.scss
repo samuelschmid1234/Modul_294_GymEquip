@@ -25,13 +25,14 @@
   }
 }
 
-.stats-grid {
+/* ───────────── KPI-Cards ───────────── */
+.kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 16px;
 }
 
-.stat-card {
+.kpi-card {
   padding: 20px !important;
   display: flex;
   flex-direction: column;
@@ -51,15 +52,17 @@
 
   &__icon {
     color: var(--color-muted-foreground);
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
 
-    &--success {
+    &[data-variant='success'] {
       color: var(--color-success);
     }
-
-    &--destructive {
+    &[data-variant='warning'] {
+      color: #d97706;
+    }
+    &[data-variant='destructive'] {
       color: var(--color-destructive);
     }
   }
@@ -67,8 +70,15 @@
   &__value {
     font-size: 28px;
     font-weight: 700;
+    line-height: 1.1;
 
-    &--destructive {
+    &[data-variant='success'] {
+      color: var(--color-success);
+    }
+    &[data-variant='warning'] {
+      color: #d97706;
+    }
+    &[data-variant='destructive'] {
       color: var(--color-destructive);
     }
   }
@@ -76,41 +86,208 @@
   &__desc {
     font-size: 12px;
     color: var(--color-muted-foreground);
+    margin: 0;
   }
 
-  &--destructive {
-    border: 1px solid rgba(var(--color-destructive-rgb), 0.4) !important;
+  &__bar {
+    width: 100%;
+    height: 6px;
+    background: var(--color-muted);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  &__bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--color-primary);
+    transition: width 0.3s ease;
+
+    &[data-variant='success'] {
+      background: var(--color-success);
+    }
+    &[data-variant='warning'] {
+      background: #d97706;
+    }
+    &[data-variant='destructive'] {
+      background: var(--color-destructive);
+    }
+  }
+
+  &--accent {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      color-mix(in srgb, var(--color-primary) 75%, #000) 100%
+    ) !important;
+    color: var(--color-primary-foreground) !important;
+
+    .kpi-card__title,
+    .kpi-card__desc {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .kpi-card__value {
+      color: var(--color-primary-foreground);
+    }
   }
 }
 
-.overview-card {
-  padding: 24px !important;
-
-  h2 {
-    font-size: 18px;
-    margin-bottom: 16px;
-  }
-}
-
-.status-grid {
+/* ───────────── Content-Grid (2 Panels) ───────────── */
+.content-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  &__sub {
+    font-size: 12px;
+    color: var(--color-muted-foreground);
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 24px;
+    color: var(--color-muted-foreground);
+    font-size: 13px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: var(--color-success);
+    }
+  }
+}
+
+/* ───────────── Wartungs-Liste ───────────── */
+.maintenance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.maintenance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--color-muted);
+  border-radius: var(--radius-md);
+  border-left: 3px solid transparent;
+
+  &--overdue {
+    border-left-color: var(--color-destructive);
+    background: rgba(var(--color-destructive-rgb), 0.08);
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__date {
+    font-size: 12px;
+    color: var(--color-muted-foreground);
+  }
+}
+
+/* ───────────── Bar-Listen (Status & Kategorien) ───────────── */
+.bar-list {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.status-cell {
-  text-align: center;
-  padding: 16px;
-  background: var(--color-muted);
-  border-radius: var(--radius-md);
+.bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-  &__count {
-    font-size: 24px;
-    font-weight: 700;
-    margin-top: 8px;
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  &__label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  &__value {
+    font-size: 12px;
+    color: var(--color-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__track {
+    width: 100%;
+    height: 8px;
+    background: var(--color-muted);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+
+    &[data-variant='primary'] {
+      background: var(--color-primary);
+    }
+    &[data-variant='destructive'] {
+      background: var(--color-destructive);
+    }
+    &[data-variant='warning'] {
+      background: #d97706;
+    }
+    &[data-variant='muted'] {
+      background: var(--color-muted-foreground);
+      opacity: 0.5;
+    }
   }
 }
 
+/* ───────────── Badge ───────────── */
 .badge {
   display: inline-block;
   padding: 4px 10px;
@@ -119,24 +296,25 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.025em;
+  white-space: nowrap;
+
+  &--destructive,
+  &[data-variant='destructive'] {
+    background: var(--color-destructive);
+    color: var(--color-destructive-foreground);
+  }
+
+  &[data-variant='warning'] {
+    background: #d97706;
+    color: #fff;
+  }
 
   &[data-variant='primary'] {
     background: var(--color-primary);
     color: var(--color-primary-foreground);
   }
 
-  &[data-variant='destructive'] {
-    background: var(--color-destructive);
-    color: var(--color-destructive-foreground);
-  }
-
-  &[data-variant='secondary'] {
-    background: var(--color-secondary);
-    color: var(--color-secondary-foreground);
-    border: 1px solid var(--color-border);
-  }
-
-  &[data-variant='outline'] {
+  &[data-variant='muted'] {
     background: transparent;
     color: var(--color-muted-foreground);
     border: 1px solid var(--color-border);

@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { Dashboard } from './dashboard';
 import { MachineService } from '../../service/machine.service';
 import { AccessorySetService } from '../../service/accessory-set.service';
+import { CategoryService } from '../../service/category.service';
 
 describe('Dashboard', () => {
   let component: Dashboard;
@@ -15,6 +16,7 @@ describe('Dashboard', () => {
       providers: [
         { provide: MachineService, useValue: { getAll: () => of([]) } },
         { provide: AccessorySetService, useValue: { getAll: () => of([]) } },
+        { provide: CategoryService, useValue: { getAll: () => of([]) } },
       ],
     }).compileComponents();
 
