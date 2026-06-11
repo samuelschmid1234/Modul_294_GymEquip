@@ -8,7 +8,7 @@
     <mat-card class="panel">
       <h2>Muskelgruppen (Kategorien)</h2>
 
-      <ng-container *appHasRole="['update', 'admin']">
+      <ng-container *appHasRole="['admin']">
         <form class="add-row" (ngSubmit)="addCategory()" (submit)="$event.preventDefault()">
           <mat-form-field appearance="outline" class="add-row__input">
             <mat-label>Neue Kategorie …</mat-label>
@@ -50,7 +50,7 @@
     <mat-card class="panel">
       <h2>Zubehör-Typen (AccessoryTypes)</h2>
 
-      <ng-container *appHasRole="['update', 'admin']">
+      <ng-container *appHasRole="['admin']">
         <form class="add-row" (ngSubmit)="addAccessoryType()" (submit)="$event.preventDefault()">
           <mat-form-field appearance="outline" class="add-row__input">
             <mat-label>Neuer Typ …</mat-label>
